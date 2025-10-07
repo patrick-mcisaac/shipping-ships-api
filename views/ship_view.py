@@ -103,17 +103,18 @@ def retrieve_ship(pk, url):
         db_cursor = conn.cursor()
 
         if '_expand' in url['query_params']:
-            db_cursor.execute("""SELECT
+            db_cursor.execute("""
+                            SELECT
                                 s.id,
                                 s.name,
                                 s.hauler_id,
                                 h.name haulerName,
                                 h.id haulerId,
                                 h.dock_id
-                              FROM Ship s
-                              JOIN Hauler h
-                              ON h.id = s.hauler_id 
-                              WHERE s.id = ?
+                            FROM Ship s
+                            JOIN Hauler h
+                            ON h.id = s.hauler_id 
+                            WHERE s.id = ?
                               """, (pk,))
             
             query_results = db_cursor.fetchone()
