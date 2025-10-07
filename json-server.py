@@ -126,6 +126,19 @@ class JSONServer(HandleRequests):
                 successfully_post = add_ship(request_body)
                 if successfully_post:
                     return self.response(" ", status.HTTP_201_SUCCESS_CREATED.value)
+        
+        elif url["requested_resource"] == 'haulers':
+            if pk == 0:
+                successfully_post = add_hauler(request_body)
+                if successfully_post:
+                    return self.response(" ", status.HTTP_201_SUCCESS_CREATED.value)
+                
+        elif url["requested_resource"] == 'docks':
+            if pk == 0:
+                successfully_post = add_dock(request_body)
+                if successfully_post:
+                    return self.response(" ", status.HTTP_201_SUCCESS_CREATED.value)
+                
         else:
             return self.response('Server Error', status.HTTP_500_SERVER_ERROR.value)
 

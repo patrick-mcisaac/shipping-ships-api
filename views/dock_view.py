@@ -88,11 +88,8 @@ def add_dock(dock_data):
 
         # SQL query to post data
         db_cursor.execute("""
-        INSERT INTO Dock
-                VALUES (
-                location = ?,
-                capacity = ?
-                          )
+        INSERT INTO Dock (location, capacity)
+                VALUES (?,?)
         """,(dock_data['location'], dock_data['capacity']))
 
         number_of_rows_added = db_cursor.rowcount

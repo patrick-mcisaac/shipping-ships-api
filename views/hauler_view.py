@@ -91,12 +91,9 @@ def add_hauler(hauler_data):
 
         # SQL query to post data
         db_cursor.execute("""
-        INSERT INTO Hauler
-                VALUES (
-                name = ?,
-                dock_id = ?
-                          )
-        """,(hauler_data['name'], hauler_data['hauler_id']))
+        INSERT INTO Hauler (name, dock_id)
+                VALUES (?,?)
+        """,(hauler_data['name'], hauler_data['dock_id']))
 
         number_of_rows_added = db_cursor.rowcount
 
