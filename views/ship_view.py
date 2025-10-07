@@ -44,7 +44,6 @@ def list_ships(url):
         # Write the SQL query to get the information you want
         if '_expand' in url['query_params']:
             
-            params = url['query_params']['_expand']
             db_cursor.execute("""
                               SELECT
                                 s.id,
@@ -97,26 +96,59 @@ def list_ships(url):
 
     return serialized_ships
 
-def retrieve_ship(pk):
+def retrieve_ship(pk, url):
     # Open a connection to the database
     with sqlite3.connect("./shipping.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
-        # Write the SQL query to get the information you want
-        db_cursor.execute("""
-        SELECT
-            s.id,
-            s.name,
-            s.hauler_id
-        FROM Ship s
-        WHERE s.id = ?
-        """, (pk,))
-        query_results = db_cursor.fetchone()
+        if '_expand' in url['query_params']:
+            db_cursor.execute("""SELECT
+                                s.id,
+                                s.name,
+                                s.hauler_id,
+                                h.name haulerName,
+                                h.id haulerId,
+                                h.dock_id
+                              FROM Ship s
+                              JOIN Hauler h
+                              ON h.id = s.hauler_id 
+                              WHERE s.id = ?
+                              """, (pk,))
+            
+            query_results = db_cursor.fetchone()
+            
+            hauler = {
+                "id": query_results['haulerId'],
+                'name': query_results['haulerName'],
+                'dock_id': query_results['dock_id']
+            }
 
-        # Serialize Python list to JSON encoded string
-        dictionary_version_of_object = dict(query_results)
-        serialized_ship = json.dumps(dictionary_version_of_object)
+            ship = {
+                "id": query_results['id'],
+                'name':query_results['name'],
+                'hauler_id': query_results['hauler_id'],
+                'hauler': hauler
+            }
+
+            serialized_ship = json.dumps(ship)
+            pass
+        else:
+
+            # Write the SQL query to get the information you want
+            db_cursor.execute("""
+            SELECT
+                s.id,
+                s.name,
+                s.hauler_id
+            FROM Ship s
+            WHERE s.id = ?
+            """, (pk,))
+            query_results = db_cursor.fetchone()
+
+            # Serialize Python list to JSON encoded string
+            dictionary_version_of_object = dict(query_results)
+            serialized_ship = json.dumps(dictionary_version_of_object)
 
     return serialized_ship
 
