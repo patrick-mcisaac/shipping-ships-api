@@ -83,10 +83,6 @@ Request ->> json-server: makes a PUT request
 
             Db -->> Haulers: here is a response
 
-            loop
-                note over Haulers: loops over db results <br> and adds them to a list
-            end
-
         Haulers -->> Views: response
     
     Views -->> json-server: response
@@ -118,10 +114,6 @@ Request ->> json-server: makes a DELETE request
             Docks ->> Db: here is a db query
 
             Db -->> Docks: here is a response
-
-            loop
-                note over Docks: loops over db results <br> and adds them to a list
-            end
 
         Docks -->> Views: response
     

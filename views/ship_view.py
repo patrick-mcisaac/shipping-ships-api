@@ -84,16 +84,19 @@ def retrieve_ship(pk):
 
     return serialized_ship
 
-# def add_ships():
-#     with sqlite3.connect("./shipping.db") as conn:
-#         conn.row_factory = sqlite3.Row
-#         db_cursor = conn.cursor()
 
-#         # SQL query to post data
-#         db_cursor.execute("""
-#         INSERT INTO Ship
-#                 VALUES (
-                
-#                           )
-#         """)
+def add_ship(ship_data):
+    with sqlite3.connect("./shipping.db") as conn:
+      
+        db_cursor = conn.cursor()
+
+        # SQL query to post data
+        db_cursor.execute("""
+        INSERT INTO Ship (name, hauler_id)
+                VALUES 
+                    (?, ?)""",( ship_data['name'], ship_data['hauler_id']))
+
+        number_of_rows_added = db_cursor.rowcount
+
+        return True if number_of_rows_added > 0 else False
 

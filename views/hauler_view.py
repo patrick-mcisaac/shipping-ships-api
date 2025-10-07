@@ -83,3 +83,21 @@ def retrieve_hauler(pk):
         serialized_hauler = json.dumps(dict(query_results))
 
     return serialized_hauler
+
+def add_hauler(hauler_data):
+    with sqlite3.connect("./shipping.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # SQL query to post data
+        db_cursor.execute("""
+        INSERT INTO Hauler
+                VALUES (
+                name = ?,
+                dock_id = ?
+                          )
+        """,(hauler_data['name'], hauler_data['hauler_id']))
+
+        number_of_rows_added = db_cursor.rowcount
+
+        return True if number_of_rows_added > 0 else False
