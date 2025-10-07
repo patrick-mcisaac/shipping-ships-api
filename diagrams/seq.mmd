@@ -26,7 +26,13 @@ json-server ->> Views: give me your exports
 
 Views -->> json-server: here you go
 
+
+
 Request ->> json-server: makes a get request
+
+    json-server ->> nss-handler: parse_url for me
+
+    nss-handler -->> json-server: here is the parsed url  as dictionary
 
     Loop json-server
         Note over json-server: checks if it requests <br> a hauler, dock or ship
@@ -42,14 +48,26 @@ Request ->> json-server: makes a get request
 
             Db -->> Ships: here is a response
 
+            loop
+                note over Ships: loops over db results <br> and adds them to a list
+            end
+
         Ships -->> Views: response
     
     Views -->> json-server: response
+
+    json-server ->> nss-handler: get response code and body
+
+    nss-handler -->> json-server: here it is
 
 json-server -->> Request: response
 
 
 Request ->> json-server: makes a PUT request
+    
+    json-server ->> nss-handler: parse_url for me
+
+    nss-handler -->> json-server: here is the parsed url  as dictionary
 
     Loop json-server
         Note over json-server: checks if it requests <br> a hauler, dock or ship
@@ -65,13 +83,27 @@ Request ->> json-server: makes a PUT request
 
             Db -->> Haulers: here is a response
 
+            loop
+                note over Haulers: loops over db results <br> and adds them to a list
+            end
+
         Haulers -->> Views: response
     
     Views -->> json-server: response
 
+    json-server ->> nss-handler: get response code and body
+
+    nss-handler -->> json-server: here it is
+
 json-server -->> Request: response
 
+
+
 Request ->> json-server: makes a DELETE request
+
+    json-server ->> nss-handler: parse_url for me
+
+    nss-handler -->> json-server: here is the parsed url  as dictionary
 
     Loop json-server
         Note over json-server: checks if it requests <br> a hauler, dock or ship
@@ -87,9 +119,17 @@ Request ->> json-server: makes a DELETE request
 
             Db -->> Docks: here is a response
 
+            loop
+                note over Docks: loops over db results <br> and adds them to a list
+            end
+
         Docks -->> Views: response
     
     Views -->> json-server: response
+
+    json-server ->> nss-handler: get response code and body
+
+    nss-handler -->> json-server: here it is
 
 json-server -->> Request: response
 

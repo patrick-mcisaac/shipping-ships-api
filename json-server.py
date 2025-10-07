@@ -110,8 +110,16 @@ class JSONServer(HandleRequests):
         else:
             return self.response("Not found", status.HTTP_404_CLIENT_ERROR_RESOURCE_NOT_FOUND.value)
 
-    def do_POST(self):
-        """Handle POST requests from a client"""
+    # def do_POST(self):
+    #     """Handle POST requests from a client"""
+    #     url = self.parse_url(self.path)
+    #     pk = url['pk']
+
+    #     if url["request_resource"] == "ships":
+    #         if pk != 0:
+    #             succesfully_post = 
+
+
 
         pass
 

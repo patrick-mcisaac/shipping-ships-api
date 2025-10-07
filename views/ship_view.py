@@ -83,3 +83,17 @@ def retrieve_ship(pk):
         serialized_ship = json.dumps(dictionary_version_of_object)
 
     return serialized_ship
+
+# def add_ships():
+#     with sqlite3.connect("./shipping.db") as conn:
+#         conn.row_factory = sqlite3.Row
+#         db_cursor = conn.cursor()
+
+#         # SQL query to post data
+#         db_cursor.execute("""
+#         INSERT INTO Ship
+#                 VALUES (
+                
+#                           )
+#         """)
+
