@@ -1,0 +1,95 @@
+sequenceDiagram
+
+Actor Request
+Participant nss-handler
+Participant json-server
+Participant Views
+Participant Docks
+Participant Haulers
+Participant Ships
+Participant Db
+
+json-server ->> nss-handler: give me your exports
+
+nss-handler -->> json-server: here you go
+
+json-server ->> Views: give me your exports
+
+    Views ->> Docks: Give me your exports
+    Docks -->> Views: Here you go
+
+    Views ->> Haulers: Give me your exports
+    Haulers -->> Views: here you go
+
+    Views ->> Ships: Give me your exports
+    Ships -->> Views: here you go
+
+Views -->> json-server: here you go
+
+Request ->> json-server: makes a get request
+
+    Loop json-server
+        Note over json-server: checks if it requests <br> a hauler, dock or ship
+    End
+
+    Note right of json-server: if ships
+
+    json-server ->> Views: call retrieve_ship()
+
+        Views ->> Ships: call retrieve_ship()
+
+            Ships ->> Db: here is a db query
+
+            Db -->> Ships: here is a response
+
+        Ships -->> Views: response
+    
+    Views -->> json-server: response
+
+json-server -->> Request: response
+
+
+Request ->> json-server: makes a PUT request
+
+    Loop json-server
+        Note over json-server: checks if it requests <br> a hauler, dock or ship
+    End
+
+    Note right of json-server: if hauler
+
+    json-server ->> Views: call update_hauler()
+
+        Views ->> Haulers: call update_hauler()
+
+            Haulers ->> Db: here is a db query
+
+            Db -->> Haulers: here is a response
+
+        Haulers -->> Views: response
+    
+    Views -->> json-server: response
+
+json-server -->> Request: response
+
+Request ->> json-server: makes a DELETE request
+
+    Loop json-server
+        Note over json-server: checks if it requests <br> a hauler, dock or ship
+    End
+
+    Note right of json-server: if dock
+
+    json-server ->> Views: call delete_dock()
+
+        Views ->> Docks: call delete_dock()
+
+            Docks ->> Db: here is a db query
+
+            Db -->> Docks: here is a response
+
+        Docks -->> Views: response
+    
+    Views -->> json-server: response
+
+json-server -->> Request: response
+
